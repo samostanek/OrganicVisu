@@ -1,11 +1,58 @@
+class Yl {
+    // TODO: Would be nice to merge this with the compound class.
+    /*
+    Direction: 0, 1, 2, 3 <=> top, right, bottom, left
+    */
+    constructor(direction, len, parent, pos) {
+        this.direction = direction;
+        this.len = len;
+        this.parent = parent;
+        this.pos = pos;
+        this.base = this.generateBase();
+    }
+
+    generateBase() {
+        let base = [];
+        for (let i = 0; i < this.len; i++) {
+            base.push(new Carbon(this.getH(i), createVector(this.pos.x + 50 * i, this.pos.y)));
+        }
+        return base;
+    }
+
+    getH(i) {
+        let o = 2;
+        if (i == this.len - 1) o++;
+        return o;
+    }
+
+    render() {
+        // Render base string
+        let previous = this.parent;
+        for (let i of this.base) {
+            i.render();
+            let ip = i.getInputPos(previous.pos);
+            let pip = previous.getInputPos(i.pos);
+            line(pip.x, pip.y, ip.x, ip.y);
+            previous = i;
+        }
+    }
+}
+
 class Carbon {
     constructor(n, pos) {
         this.H = n;
         this.pos = pos;
         this.r = 15;
+        this.yls = [];
+    }
+
+    addYl(l) {
+        this.yls.push(new Yl(0, l, this, createVector(this.pos.x, this.pos.y + 50)));
+        this.H--;
     }
 
     render() {
+        // Render this
         push();
         translate(-2, 1);
         textSize(12);
@@ -15,6 +62,8 @@ class Carbon {
         textSize(textSize() / 1.3);
         text(this.H, this.pos.x + 11, this.pos.y);
         pop();
+        // Render alkyls
+        this.yls.forEach(el => el.render());
     }
 
     getInputPos(pos) {

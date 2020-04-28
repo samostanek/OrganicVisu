@@ -2,7 +2,7 @@ class Compound {
     constructor(name) {
         this.name = name;
         this.parse();
-        this.generateBase();
+        this.base = this.generateBase();
     }
 
     parse() {
@@ -18,7 +18,7 @@ class Compound {
         let core = buffer;
         parsed = parsed.map(function (x) {
             return {
-                indexes: x.match(/[0-9]+/g).map(x => parseInt(x)),
+                indexes: x.match(/[0-9]+/g).map((x) => parseInt(x) - 1),
                 l: parseInt(
                     baseStr[x.replace(new RegExp(Object.keys(numbersStr).join("|") + "|,|-|yl|[0-9]+", "gi"), "")]
                 ),
@@ -29,23 +29,26 @@ class Compound {
     }
 
     generateBase() {
-        this.base = [];
+        let base = [];
         for (let i = 0; i < this.coreLength; i++) {
-            this.base.push(new Carbon(this.getH(i), createVector(100 + 50 * i, 200)));
+            base.push(new Carbon(this.getH(i), createVector(100 + 50 * i, 200)));
         }
+        for (let i of this.parsed) {
+            for (let j of i.indexes) {
+                base[j].addYl(i.l);
+            }
+        }
+        return base;
     }
 
     getH(i) {
         let o = 2;
         if (i == 0 || i == this.coreLength - 1) o++;
-        this.parsed.forEach((el) => {
-            // debugger;
-            if (el.indexes.includes(i)) o--;
-        });
         return o;
     }
 
     render() {
+        // Render base string
         let previous = undefined;
         for (let i of this.base) {
             i.render();
@@ -55,6 +58,9 @@ class Compound {
                 line(pip.x, pip.y, ip.x, ip.y);
             }
             previous = i;
+        }
+        // Render alkyls
+        for (let i of this.parsed) {
         }
     }
 }
