@@ -46,8 +46,25 @@ class Carbon {
         this.yls = [];
     }
 
-    addYl(l) {
-        this.yls.push(new Yl(0, l, this, createVector(this.pos.x, this.pos.y + 50)));
+    addYl(l, direction) {
+        let pos;
+        switch (direction) {
+            case 0:
+                pos = createVector(this.pos.x, this.pos.y - 50);
+                break;
+            case 1:
+                pos = createVector(this.pos.x + 50, this.pos.y);
+                break;
+            case 2:
+                pos = createVector(this.pos.x, this.pos.y + 50);
+                break;
+            case 3:
+                pos = createVector(this.pos.x - 50, this.pos.y);
+                break;
+            default:
+                break;
+        }
+        this.yls.push(new Yl(0, l, this, pos));
         this.H--;
     }
 
@@ -60,10 +77,10 @@ class Carbon {
         text("CH", this.pos.x, this.pos.y);
         textAlign(CENTER, TOP);
         textSize(textSize() / 1.3);
-        text(this.H, this.pos.x + 11, this.pos.y);
+        text(this.H == 1 ? '' : this.H, this.pos.x + 11, this.pos.y);
         pop();
         // Render alkyls
-        this.yls.forEach(el => el.render());
+        this.yls.forEach((el) => el.render());
     }
 
     getInputPos(pos) {
