@@ -19,8 +19,10 @@ class Compound {
         }
         let core = buffer;
         parsed = parsed.map(function (x) {
+            let positioning = x.match(/[0-9]+/g);
+            if (positioning == null) positioning = ["1"];
             return {
-                indexes: x.match(/[0-9]+/g).map((x) => parseInt(x) - 1),
+                indexes: positioning.map((x) => parseInt(x) - 1),
                 l: parseInt(
                     baseStr[x.replace(new RegExp(Object.keys(numbersStr).join("|") + "|,|-|yl|[0-9]+", "gi"), "")]
                 ),
@@ -52,7 +54,7 @@ class Compound {
     }
 
     isFree(i, l, side) {
-        for (let j = i; j <= i + l; j++) if (this.baseFree[j] || !this.baseFree[j][side]) return false;
+        for (let j = i; j <= i + l; j++) if (this.baseFree[j] && !this.baseFree[j][side]) return false;
         return true;
     }
 

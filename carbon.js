@@ -74,10 +74,10 @@ class Carbon {
         translate(-2, 1);
         textSize(12);
         textAlign(CENTER, CENTER);
-        text("CH", this.pos.x, this.pos.y);
+        text(this.H == 0 ? "C" : "CH", this.pos.x, this.pos.y);
         textAlign(CENTER, TOP);
         textSize(textSize() / 1.3);
-        text(this.H == 1 ? '' : this.H, this.pos.x + 11, this.pos.y);
+        text(this.H == 1 || this.H == 0 ? '' : this.H, this.pos.x + 11, this.pos.y);
         pop();
         // Render alkyls
         this.yls.forEach((el) => el.render());
