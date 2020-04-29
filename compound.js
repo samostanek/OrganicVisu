@@ -44,15 +44,15 @@ class Compound {
 
     getFree(i, l) {
         if (this.isFree(i, l, 0)) {
-            for (let j = i; j <= i + l; j++) this.baseFree[j][0] = false;
+            for (let j = i; j <= i + l; j++) if (this.baseFree[j]) this.baseFree[j][0] = false;
             return 0;
         }
-        for (let j = i; j <= i + l; j++) this.baseFree[j][2] = false;
+        for (let j = i; j <= i + l; j++) if (this.baseFree[j]) this.baseFree[j][2] = false;
         return 2;
     }
 
     isFree(i, l, side) {
-        for (let j = i; j <= i + l; j++) if (!this.baseFree[j][side]) return false;
+        for (let j = i; j <= i + l; j++) if (this.baseFree[j] || !this.baseFree[j][side]) return false;
         return true;
     }
 
