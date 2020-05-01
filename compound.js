@@ -3,11 +3,13 @@ class Compound {
         this.name = name;
         [this.coreLength, this.parsed] = this.parse();
         this.baseFree = []; // this.baseFree[i] is an bool array (top, right, bottom, left).
-        for (let i = 0; i < this.coreLength; i++) this.baseFree.push([true, true, true, true]);
+        for (let i = 0; i < this.coreLength; i++)
+            this.baseFree.push([true, i == this.coreLength - 1 ? true : false, true, i == 0 ? true : false, true]);
         this.base = this.generateBase();
     }
 
     parse() {
+        // Parse prefixes
         let parsed = [];
         let buffer = "";
         for (let i of this.name) {
@@ -17,7 +19,9 @@ class Compound {
                 buffer = "";
             }
         }
-        let core = buffer;
+        let core = buffer.split("an");
+
+        // Generate return value
         parsed = parsed.map(function (x) {
             let positioning = x.match(/[0-9]+/g);
             if (positioning == null) positioning = ["1"];
@@ -28,7 +32,19 @@ class Compound {
                 ),
             };
         });
-        return [baseStr[core.split("an")[0]], parsed];
+
+        // Parse suffixes
+        buffer = "";
+        let suffixes = [];
+        if (core[1] != "") {
+            for (let i of core[1]) {
+                buffer += i;
+                if (buffer.endsWith("ol")) {
+                    parsed.push({ indexes: buffer.match(/[0-9]+/g).map((x) => parseInt(x) - 1), l: -1 });
+                }
+            }
+        }
+        return [baseStr[core[0]], parsed];
     }
 
     generateBase() {
@@ -45,16 +61,24 @@ class Compound {
     }
 
     getFree(i, l) {
+        if (l < 1) l = 1;
         if (this.isFree(i, l, 0)) {
             for (let j = i; j <= i + l; j++) if (this.baseFree[j]) this.baseFree[j][0] = false;
             return 0;
         }
-        for (let j = i; j <= i + l; j++) if (this.baseFree[j]) this.baseFree[j][2] = false;
-        return 2;
+        if (this.isFree(i, l, 2)) {
+            for (let j = i; j <= i + l; j++) if (this.baseFree[j]) this.baseFree[j][2] = false;
+            return 2;
+        }
+        if (this.isFree(i, l, 1)) {
+            for (let j = i; j <= i + l; j++) if (this.baseFree[j]) this.baseFree[j][1] = false;
+            return 1;
+        }
+        throw new Error('Too many connections to C.');
     }
 
     isFree(i, l, side) {
-        for (let j = i; j <= i + l; j++) if (this.baseFree[j] && !this.baseFree[j][side]) return false;
+        for (let j = i; j < i + l; j++) if (this.baseFree[j] && !this.baseFree[j][side]) return false;
         return true;
     }
 

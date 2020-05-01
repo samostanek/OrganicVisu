@@ -13,8 +13,10 @@ class Yl {
 
     generateBase() {
         let base = [];
-        for (let i = 0; i < this.len; i++) {
-            base.push(new Carbon(this.getH(i), createVector(this.pos.x + 50 * i, this.pos.y)));
+        for (let i = 0; i < ((this.len < 1) ? 1 : this.len); i++) {
+            base.push(
+                new Carbon(this.len < 1 ? this.len : this.getH(i), createVector(this.pos.x + 50 * i, this.pos.y))
+            );
         }
         return base;
     }
@@ -74,10 +76,10 @@ class Carbon {
         translate(-2, 1);
         textSize(12);
         textAlign(CENTER, CENTER);
-        text(this.H == 0 ? "C" : "CH", this.pos.x, this.pos.y);
+        text(this.H == 0 ? "C" : this.H == -1 ? "OH" : "CH", this.pos.x, this.pos.y);
         textAlign(CENTER, TOP);
         textSize(textSize() / 1.3);
-        text(this.H == 1 || this.H == 0 ? '' : this.H, this.pos.x + 11, this.pos.y);
+        text(this.H <= 1 ? "" : this.H, this.pos.x + 11, this.pos.y);
         pop();
         // Render alkyls
         this.yls.forEach((el) => el.render());

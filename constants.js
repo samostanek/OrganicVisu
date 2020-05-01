@@ -17,6 +17,7 @@ const basesInt = {
     8: "okt",
     9: "non",
     10: "dek",
+    "-1": "ol",
 };
 const baseStr = swap(basesInt);
 const numbersInt = {
