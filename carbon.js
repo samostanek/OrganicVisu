@@ -10,8 +10,6 @@ class Yl {
         this.pos = pos;
         this.base = this.generateBase();
     }
-    
-    // Filipova poznamka
 
     generateBase() {
         let base = [];
