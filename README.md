@@ -13,13 +13,13 @@ These structures can be arbitrarly combined.
 Implicit positioning (works metyletan as well as metyl-1-etan) is available only for alkyls.
 
 ## File structure
-.
-├── p5.js - p5 library
-├── sketch.js - main script
-├── constants.js - conversion between string and number encoding
-├── carbon.js - contains `Yl` and `Carbon` classes
-├── compound.js - contains `Compound` class
-└── addons - currently not in use
+.<br>
+├── p5.js - p5 library<br>
+├── sketch.js - main script<br>
+├── constants.js - conversion between string and number encoding<br>
+├── carbon.js - contains `Yl` and `Carbon` classes<br>
+├── compound.js - contains `Compound` class<br>
+└── addons - currently not in use<br>
     |── p5.sound.js
 
 ## Internal structure
