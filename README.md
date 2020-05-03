@@ -20,12 +20,16 @@ Implicit positioning (works metyletan as well as metyl-1-etan) is available only
 ├── carbon.js - contains `Yl` and `Carbon` classes<br>
 ├── compound.js - contains `Compound` class<br>
 └── addons - currently not in use<br>
-    |── p5.sound.js
+
 
 ## Internal structure
 Scripts are called in following order: `p5.js` -> `constants.js` -> `carbon.js` -> `compound.js` -> `sketch.js`.
 Algorithm starts with function `drawCompound()@sketch.js`, which is called after user presses button. New Compound object is created.
 ### Compound class
-Compound parses input string using the function Compound.parse(). Compound stores array of Carbon object - `Compound.base`.
+**Represents whole compound.** Compound parses input string using the function `Compound.parse()`. Compound stores array of Carbon objects in `Compound.base`. It also stores an array of `Yl` objects.
 ### Carbon class
+**Represents one unit (for ex. CH3, OH...).** Contains exact xy position where to be rendered.
 ### Yl class
+**Represents an addition to base string (alkyls and alcohols).** It contains an array or Carbon objects - `Yl.base`.
+### Rendering
+Every class contains render function. `Compound.render()` calls `Carbon.render()`, which renders base carbons and calls `Yl.render()`.
