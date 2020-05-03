@@ -1,11 +1,12 @@
 class Compound {
     constructor(name) {
-        this.name = name;
+        this.name = name;   // Input string
         [this.coreLength, this.parsed] = this.parse();
         this.baseFree = []; // this.baseFree[i] is an bool array (top, right, bottom, left).
+        // this.baseFree[] represents free space around Carbon i of base string
         for (let i = 0; i < this.coreLength; i++)
             this.baseFree.push([true, i == this.coreLength - 1 ? true : false, true, i == 0 ? true : false, true]);
-        this.base = this.generateBase();
+        this.base = this.generateBase();    // Array of Carbons in base string
     }
 
     parse() {
@@ -48,6 +49,7 @@ class Compound {
     }
 
     generateBase() {
+        // Returns array of Carbon objects - base string (for ex. etan - CH3CH3)
         let base = [];
         for (let i = 0; i < this.coreLength; i++) {
             base.push(new Carbon(this.getH(i), createVector(100 + 50 * i, 200)));
@@ -61,6 +63,8 @@ class Compound {
     }
 
     getFree(i, l) {
+        // Returns, where (top, right, bottom or left) can be placed new alkyl
+        // of length l connected to Carbon i of base string
         if (l < 1) l = 1;
         if (this.isFree(i, l, 0)) {
             for (let j = i; j <= i + l; j++) if (this.baseFree[j]) this.baseFree[j][0] = false;
@@ -78,11 +82,13 @@ class Compound {
     }
 
     isFree(i, l, side) {
+        // Checks, if there is free space for alkyl of length l on given side of Carbon i of base string
         for (let j = i; j < i + l; j++) if (this.baseFree[j] && !this.baseFree[j][side]) return false;
         return true;
     }
 
     getH(i) {
+        // Gets number of hydrogens for Carbon i
         let o = 2;
         if (i == 0 || i == this.coreLength - 1) o++;
         return o;
@@ -99,9 +105,6 @@ class Compound {
                 line(pip.x, pip.y, ip.x, ip.y);
             }
             previous = i;
-        }
-        // Render alkyls
-        for (let i of this.parsed) {
         }
     }
 }

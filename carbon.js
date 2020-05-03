@@ -4,11 +4,11 @@ class Yl {
     Direction: 0, 1, 2, 3 <=> top, right, bottom, left
     */
     constructor(direction, len, parent, pos) {
-        this.direction = direction;
-        this.len = len;
-        this.parent = parent;
-        this.pos = pos;
-        this.base = this.generateBase();
+        this.direction = direction; // Direction relative to parent
+        this.len = len; // Number of Carbons in alkyl
+        this.parent = parent;   // Reference to parent carbon of base string
+        this.pos = pos; // Position of Carbon connected to base string
+        this.base = this.generateBase();    // Array of Carbons
     }
 
     generateBase() {
@@ -42,10 +42,10 @@ class Yl {
 
 class Carbon {
     constructor(n, pos) {
-        this.H = n;
-        this.pos = pos;
-        this.r = 15;
-        this.yls = [];
+        this.H = n; // Number of carbons attached (negative for specials - OH=-1)
+        this.pos = pos; // Xy position vector (class p5.Vector)
+        this.r = 15;    // Radius for connections
+        this.yls = [];  // Array of Yl objects
     }
 
     addYl(l, direction) {
